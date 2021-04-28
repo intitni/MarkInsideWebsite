@@ -17,8 +17,14 @@ struct MarkInsideWebsite: Website {
     var description = "MarkInside for macOS and Windows"
     var language: Language { .english }
     var imagePath: Path? { nil }
-    var appStoreURL = URL(string: "https://markinside.intii.com")!
-    var windowsStoreURL = URL(string: "https://markinside.intii.com")!
+}
+
+extension Website {
+    var appStoreURL: URL { URL(string: "https://markinside.intii.com")! }
+    var windowsStoreURL: URL { URL(string: "https://markinside.intii.com")! }
+    var changeLogURL: URL { URL(string: "https://markinside.intii.com")! }
+    var privacyPolicyURL: URL { URL(string: "https://markinside.intii.com")! }
+    var gTagURL: URL { URL(string: "https://www.googletagmanager.com/gtag/js?id=UA-17603222-4")! }
 }
 
 // This will generate your website using the built-in Foundation theme:

@@ -19,11 +19,14 @@ private struct AHTMLFactory<Site: Website>: HTMLFactory {
             .lang(context.site.language),
             .head(for: index, on: context.site),
             .body(
+                .class("wrapper"),
+                .header(for: index, on: context.site),
                 .appBanner(for: index, on: context.site),
                 .div(
                     .class("content"),
                     index.content.body.node
-                )
+                ),
+                .footer(for: index, on: context.site)
             )
         )
     }
@@ -36,11 +39,14 @@ private struct AHTMLFactory<Site: Website>: HTMLFactory {
             .lang(context.site.language),
             .head(for: section, on: context.site),
             .body(
+                .class("wrapper"),
+                .header(for: section, on: context.site),
                 .appBanner(for: section, on: context.site),
                 .div(
                     .class("content"),
                     section.content.body.node
-                )
+                ),
+                .footer(for: section, on: context.site)
             )
         )
     }
@@ -84,17 +90,65 @@ extension Node where Context == HTML.BodyContext {
             ),
             .div(
                 .class("app-title"),
-                .h1(.text(location.title))
+                .h1(.text("MarkInside"))
             ),
             .div(
                 .class("app-introduction"),
                 .p("You don’t need a fancy markdown editor to create, edit and preview"),
                 .p(
-                    "Latex Math",
-                    "and",
-                    "Mermaid"
+                    .span(
+                        .class("bold"),
+                        "Latex Math"
+                    ),
+                    " and ",
+                    .span(
+                        .class("bold"),
+                        "Mermaid"
+                    )
+                )
+            ),
+            .div(
+                .class("downloads"),
+                .a(
+                    .href(site.appStoreURL),
+                    .img(.src("/DownloadFromMAS_US.svg"))
                 )
             )
+        )
+    }
+    
+    static func header<T: Website>(
+        for location: Location,
+        on site: T
+    ) -> Node<HTML.BodyContext> {
+        return .header(
+            .class("header"),
+            .div(
+                .class("page-links"),
+                .p(.a(
+                    .href(site.changeLogURL),
+                    .text("Change Log")
+                )),
+                .p(.a(
+                    .href(site.privacyPolicyURL),
+                    .text("Privacy Policy")
+                ))
+            )
+        )
+    }
+    
+    static func footer<T: Website>(
+        for location: Location,
+        on site: T
+    ) -> Node<HTML.BodyContext> {
+        return .footer(
+            .class("footer"),
+            .p(.text("Copyright © 2021")),
+            .p(.a(
+                .text("Contact Me"),
+                .href("mailto:abnormalmouseapp@intii.com")
+            )),
+            .script(.attribute(.src(site.gTagURL)))
         )
     }
 }

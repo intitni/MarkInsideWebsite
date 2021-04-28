@@ -1,44 +1,145 @@
 body {
-    background: #3E6FCF;
-    color: white;
-    font-family: Helvetica Neue, Helvetica, Arial, PingFang SC;
+  background: #3e6fcf;
+  color: white;
+  font-family: Helvetica Neue, Helvetica, Arial, PingFang SC;
+}
+
+.page-links {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row;
+}
+
+.page-links p {
+  margin-left: 1.4em;
+  font: 18px;
+}
+
+.page-links a {
+  color: #d9e6ff;
+  text-decoration: none;
 }
 
 .wrapper {
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: left;
+  max-width: calc(800px + 1em);
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 1em;
 }
 
-.appIcon {
-    width: 400px;
-    height: 400px;
+.introduction-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: min(580px, 100%);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.app-icon img {
+  width: 400px;
+  height: 400px;
+}
+
+.app-title {
+  text-align: center;
+  margin-top: -4em;
+}
+
+.app-introduction {
+  text-align: center;
+  color: #d9e6ff;
+  margin-top: -2em;
+}
+
+.downloads {
+  display: flex;
+  flex-direction: row;
+}
+
+.downloads a {
+  margin: 0 1.5em;
+  box-shadow: none;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.content {
+  color: white;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  height: 120px;
+}
+
+.footer a {
+  color: white;
+  text-decoration: none;
 }
 
 h1 {
-    margin-bottom: 20px;
-    font-size: 60px;
-    font-weight: medium;
-    color: white;
+  margin-bottom: 20px;
+  font-size: 60px;
+  font-weight: medium;
+  color: white;
 }
 
 h2 {
-    margin: 20px 0;
-    color: white;
-    font-size: 42px;
-    font-weight: bold;
+  margin: 20px 0;
+  color: white;
+  font-size: 38px;
+  font-weight: bold;
 }
 
 p {
-    font-size: 32px;
-    color: #4F4F4F;
+  font-size: 22px;
 }
 
 p.description {
-    color: #D9E6FF;
+  color: #d9e6ff;
 }
 
 p.note {
-    opacity: 40%;
+  opacity: 40%;
+}
+
+a {
+  box-shadow: inset 0 -8px 0 #305eb6;
+  -webkit-transition: box-shadow 0.15s linear;
+  transition: box-shadow 0.15s linear;
+  padding: 0 2px;
+}
+
+a:hover {
+  box-shadow: inset 0 -30px 0 #305eb6;
+  -webkit-transition: box-shadow 0.15s linear;
+  transition: box-shadow 0.15s linear;
+}
+
+@media screen and (max-width: 500px) {
+  .app-icon img {
+    width: 240px;
+    height: 240px;
+  }
+
+  h1 {
+    font-size: 50px;
+  }
+
+  h2 {
+    font-size: 32px;
+    text-align: center;
+  }
+
+  p {
+    font-size: 18px;
+  }
 }
