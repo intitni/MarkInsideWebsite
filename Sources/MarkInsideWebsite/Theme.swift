@@ -94,11 +94,11 @@ extension Node where Context == HTML.BodyContext {
             ),
             .div(
                 .class("app-introduction"),
-                .p("You don’t need a fancy markdown editor to create, edit and preview"),
+                .p("You don’t need a fancy markdown editor to\ncreate, edit and preview"),
                 .p(
                     .span(
                         .class("bold"),
-                        "Latex Math"
+                        "LaTex Math"
                     ),
                     " and ",
                     .span(
@@ -146,7 +146,7 @@ extension Node where Context == HTML.BodyContext {
             .p(.text("Copyright © 2021")),
             .p(.a(
                 .text("Contact Me"),
-                .href("mailto:abnormalmouseapp@intii.com")
+                .href("mailto:markinsideapp@intii.com")
             )),
             .script(.attribute(.src(site.gTagURL)))
         )

@@ -20,7 +20,7 @@ struct MarkInsideWebsite: Website {
 }
 
 extension Website {
-    var appStoreURL: URL { URL(string: "https://markinside.intii.com")! }
+    var appStoreURL: URL { URL(string: "https://apps.apple.com/cn/app/markinside/id1551813400")! }
     var windowsStoreURL: URL { URL(string: "https://markinside.intii.com")! }
     var changeLogURL: URL { URL(string: "https://www.craft.do/s/3U2bTBDh3YGYG7")! }
     var privacyPolicyURL: URL { URL(string: "https://www.craft.do/s/202QeKkBT1MksS")! }
