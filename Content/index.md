@@ -1,4 +1,4 @@
-## Single source of truth
+## Image is the Source
 
 There is no \*.markinside file generated alongside when you save images from code. The images are just the single source of truth. You can simply✱ open them in MarkInside to make changes.
 

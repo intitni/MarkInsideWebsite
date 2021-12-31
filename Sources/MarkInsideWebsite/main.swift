@@ -13,8 +13,8 @@ struct MarkInsideWebsite: Website {
 
     // Update these properties to configure your website:
     var url = URL(string: "https://markinside.intii.com")!
-    var name = "MarkInside for macOS and Windows"
-    var description = "MarkInside for macOS and Windows"
+    var name = "MarkInside for macOS (and Windows Later)"
+    var description = "MarkInside for macOS (and Windows Later)"
     var language: Language { .english }
     var imagePath: Path? { nil }
 }

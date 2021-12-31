@@ -13,11 +13,86 @@ extension Theme {
     }
 }
 
+extension Location {
+    var language: Language {
+        if let section = self as? Section<MarkInsideWebsite> {
+            switch section.id {
+            case MarkInsideWebsite.SectionID.zh_cn:
+                return .chinese
+            }
+        }
+        return .english
+    }
+    
+    var appDescription: String {
+        switch language {
+        case .chinese:
+            return "你并不需要一个高端的笔记软件去创建、编辑、预览"
+        default:
+            return "You don’t need a fancy note editor to\ncreate, edit and preview"
+        }
+    }
+    
+    var and: String {
+        switch language {
+        case .chinese:
+            return " 和 "
+        default:
+            return " and "
+        }
+    }
+    
+    var changelog: String {
+        switch language {
+        case .chinese:
+            return "版本记录"
+        default:
+            return "Change Log"
+        }
+    }
+    
+    var privacyPolicy: String {
+        switch language {
+        case .chinese:
+            return "隐私协议"
+        default:
+            return "Privacy Policy"
+        }
+    }
+    
+    var contactMe: String {
+        switch language {
+        case .chinese:
+            return "联系我"
+        default:
+            return "Contact Me"
+        }
+    }
+    
+    var downloadFromAppStoreLink: String {
+        switch language {
+        case .chinese:
+            return "/DownloadFromMAS_US.svg"
+        default:
+            return "/DownloadFromMAS_US.svg"
+        }
+    }
+    
+    var twitterCardPath: Path {
+        switch language {
+        case .chinese:
+            return "Twitter_Card_ZH.png"
+        default:
+            return "Twitter_Card_EN.png"
+        }
+    }
+}
+
 private struct AHTMLFactory<Site: Website>: HTMLFactory {
     func makeIndexHTML(for index: Index, context: PublishingContext<Site>) throws -> HTML {
         HTML(
             .lang(context.site.language),
-            .head(for: index, on: context.site),
+            .customHead(for: index, on: context.site),
             .body(
                 .class("wrapper"),
                 .header(for: index, on: context.site),
@@ -37,7 +112,7 @@ private struct AHTMLFactory<Site: Website>: HTMLFactory {
     ) throws -> HTML {
         HTML(
             .lang(context.site.language),
-            .head(for: section, on: context.site),
+            .customHead(for: section, on: context.site),
             .body(
                 .class("wrapper"),
                 .header(for: section, on: context.site),
@@ -54,14 +129,14 @@ private struct AHTMLFactory<Site: Website>: HTMLFactory {
     func makeItemHTML(for item: Item<Site>, context: PublishingContext<Site>) throws -> HTML {
         HTML(
             .lang(context.site.language),
-            .head(for: item, on: context.site)
+            .customHead(for: item, on: context.site)
         )
     }
 
     func makePageHTML(for page: Page, context: PublishingContext<Site>) throws -> HTML {
         HTML(
             .lang(context.site.language),
-            .head(for: page, on: context.site)
+            .customHead(for: page, on: context.site)
         )
     }
 
@@ -94,13 +169,13 @@ extension Node where Context == HTML.BodyContext {
             ),
             .div(
                 .class("app-introduction"),
-                .p("You don’t need a fancy markdown editor to\ncreate, edit and preview"),
+                .p(.text(location.appDescription)),
                 .p(
                     .span(
                         .class("bold"),
                         "LaTex Math"
                     ),
-                    " and ",
+                    .text(location.and),
                     .span(
                         .class("bold"),
                         "Mermaid"
@@ -111,7 +186,7 @@ extension Node where Context == HTML.BodyContext {
                 .class("downloads"),
                 .a(
                     .href(site.appStoreURL),
-                    .img(.src("/DownloadFromMAS_US.svg"))
+                    .img(.src(location.downloadFromAppStoreLink))
                 )
             )
         )
@@ -127,11 +202,11 @@ extension Node where Context == HTML.BodyContext {
                 .class("page-links"),
                 .p(.a(
                     .href(site.changeLogURL),
-                    .text("Change Log")
+                    .text(location.changelog)
                 )),
                 .p(.a(
                     .href(site.privacyPolicyURL),
-                    .text("Privacy Policy")
+                    .text(location.privacyPolicy)
                 ))
             )
         )
@@ -145,7 +220,7 @@ extension Node where Context == HTML.BodyContext {
             .class("footer"),
             .p(.text("Copyright © 2021")),
             .p(.a(
-                .text("Contact Me"),
+                .text(location.contactMe),
                 .href("mailto:markinsideapp@intii.com")
             )),
             .script(.attribute(.src(site.gTagURL)))
@@ -154,8 +229,8 @@ extension Node where Context == HTML.BodyContext {
 }
 
 extension Node where Context == HTML.DocumentContext {
-    func head<T: Website>(
-        for location: Location,
+    static func customHead<T: Website, L: Location>(
+        for location: L,
         on site: T
     ) -> Node<HTML.DocumentContext> {
         var title = location.title
@@ -182,14 +257,14 @@ extension Node where Context == HTML.DocumentContext {
             .forEach(["/styles.css"]) { .stylesheet($0) },
             .viewport(.accordingToDevice),
             .unwrap(site.favicon) { .favicon($0) },
-            .unwrap(location.imagePath ?? site.imagePath) { path in
-                let url = site.url(for: path)
+            .socialImageLink({
+                let url = site.url(for: location.twitterCardPath)
                 var components = URLComponents(url: url, resolvingAgainstBaseURL: false)!
                 components.queryItems = [
                     .init(name: "random", value: String(Int.random(in: 1...9999))),
                 ]
-                return .socialImageLink(components.url!)
-            },
+                return components.url!
+            }()),
             .meta(
                 .attribute(named: "name", value: "twitter:site"),
                 .attribute(named: "content", value: "@intitni")
@@ -197,23 +272,6 @@ extension Node where Context == HTML.DocumentContext {
             .meta(
                 .attribute(named: "name", value: "twitter:creator"),
                 .attribute(named: "content", value: "@intitni")
-            ),
-            .script( // Enable Gtag
-                .raw("""
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', 'UA-17603222-4');
-                """)
-            ),
-            .script( // Google Tag Manager
-                .raw("""
-                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-                })(window,document,'script','dataLayer','GTM-5K84TFL');
-                """)
             )
         )
     }
