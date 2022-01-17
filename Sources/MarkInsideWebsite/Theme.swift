@@ -233,26 +233,14 @@ extension Node where Context == HTML.DocumentContext {
         for location: L,
         on site: T
     ) -> Node<HTML.DocumentContext> {
-        var title = location.title
-
-        if title.isEmpty {
-            title = site.name
-        } else {
-            title.append("|" + site.name)
-        }
-
-        var description = location.description
-
-        if description.isEmpty {
-            description = site.description
-        }
+        let title = site.name
 
         return .head(
             .encoding(.utf8),
             .siteName(title),
             .url(site.url(for: location)),
             .title(title),
-            .description(description),
+            .description(site.description),
             .twitterCardType(.summaryLargeImage),
             .forEach(["/styles.css"]) { .stylesheet($0) },
             .viewport(.accordingToDevice),
