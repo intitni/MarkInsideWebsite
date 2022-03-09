@@ -23,7 +23,7 @@ extension Location {
         }
         return .english
     }
-    
+
     var appDescription: String {
         switch language {
         case .chinese:
@@ -32,16 +32,37 @@ extension Location {
             return "You don’t need a fancy note editor to\ncreate, edit and preview"
         }
     }
-    
+
     var and: String {
         switch language {
         case .chinese:
             return " 和 "
         default:
-            return " and "
+            return " , and "
         }
     }
-    
+
+    var supportedFeatures: Node<HTML.BodyContext> {
+        switch language {
+        case .chinese:
+            return .p(
+                .span(.class("bold"), .text("LaTeX 数学公式")),
+                .text("、"),
+                .span(.class("bold"), .text("Mermaid")),
+                .text(" 和"),
+                .span(.class("bold"), .text("任意 HTML"))
+            )
+        default:
+            return .p(
+                .span(.class("bold"), .text("LaTeX Math")),
+                .text(", "),
+                .span(.class("bold"), .text("Mermaid")),
+                .text(", and "),
+                .span(.class("bold"), .text("any HTML"))
+            )
+        }
+    }
+
     var changelog: String {
         switch language {
         case .chinese:
@@ -50,7 +71,7 @@ extension Location {
             return "Change Log"
         }
     }
-    
+
     var privacyPolicy: String {
         switch language {
         case .chinese:
@@ -59,7 +80,7 @@ extension Location {
             return "Privacy Policy"
         }
     }
-    
+
     var contactMe: String {
         switch language {
         case .chinese:
@@ -68,7 +89,7 @@ extension Location {
             return "Contact Me"
         }
     }
-    
+
     var downloadFromAppStoreLink: String {
         switch language {
         case .chinese:
@@ -77,7 +98,7 @@ extension Location {
             return "/DownloadFromMAS_US.svg"
         }
     }
-    
+
     var twitterCardPath: Path {
         switch language {
         case .chinese:
@@ -170,17 +191,7 @@ extension Node where Context == HTML.BodyContext {
             .div(
                 .class("app-introduction"),
                 .p(.text(location.appDescription)),
-                .p(
-                    .span(
-                        .class("bold"),
-                        "LaTex Math"
-                    ),
-                    .text(location.and),
-                    .span(
-                        .class("bold"),
-                        "Mermaid"
-                    )
-                )
+                location.supportedFeatures
             ),
             .div(
                 .class("downloads"),
@@ -191,7 +202,7 @@ extension Node where Context == HTML.BodyContext {
             )
         )
     }
-    
+
     static func header<T: Website>(
         for location: Location,
         on site: T
@@ -211,7 +222,7 @@ extension Node where Context == HTML.BodyContext {
             )
         )
     }
-    
+
     static func footer<T: Website>(
         for location: Location,
         on site: T
@@ -223,7 +234,13 @@ extension Node where Context == HTML.BodyContext {
                 .text(location.contactMe),
                 .href("mailto:markinsideapp@intii.com")
             )),
-            .script(.attribute(.src(site.gTagURL)))
+            .script(.attribute(.src(site.gTagURL)), .async()),
+            .script(.raw("""
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-GXHVET7ERS');
+            """))
         )
     }
 }
@@ -249,7 +266,7 @@ extension Node where Context == HTML.DocumentContext {
                 let url = site.url(for: location.twitterCardPath)
                 var components = URLComponents(url: url, resolvingAgainstBaseURL: false)!
                 components.queryItems = [
-                    .init(name: "random", value: String(Int.random(in: 1...9999))),
+                    .init(name: "random", value: String(Int.random(in: 1 ... 9999))),
                 ]
                 return components.url!
             }()),
