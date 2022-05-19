@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug MarkInsideWebsite",
+            "program": "${workspaceFolder:MarkInsideWebsite}/.build/debug/MarkInsideWebsite",
+            "args": [],
+            "cwd": "${workspaceFolder:MarkInsideWebsite}",
+            "preLaunchTask": "swift: Build Debug MarkInsideWebsite"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Release MarkInsideWebsite",
+            "program": "${workspaceFolder:MarkInsideWebsite}/.build/release/MarkInsideWebsite",
+            "args": [],
+            "cwd": "${workspaceFolder:MarkInsideWebsite}",
+            "preLaunchTask": "swift: Build Release MarkInsideWebsite"
+        }
+    ]
+}
