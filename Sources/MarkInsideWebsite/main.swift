@@ -17,6 +17,7 @@ struct MarkInsideWebsite: Website {
     var description = "MarkInside for macOS and Windows"
     var language: Language { .english }
     var imagePath: Path? { nil }
+    var favicon: Favicon? { .init(path: "favicon.png") }
 }
 
 struct Links {

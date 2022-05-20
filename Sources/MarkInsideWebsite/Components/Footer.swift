@@ -24,6 +24,6 @@ struct Footer: Component {
             gtag('config', 'G-GXHVET7ERS');
             """))
         })
-        .class("flex justify-between items-center h-[120px]")
+        .class("flex justify-between items-center h-[120px] text-xs")
     }
 }

@@ -20,7 +20,7 @@ struct Header: Component {
                         url: links.privacyPolicyURL
                     )
                 }
-            }.class("flex flex-row justify-end space-x-4 text-xs")
+            }.class("flex flex-row justify-end space-x-4 text-xs mt-8")
         }
     }
 }

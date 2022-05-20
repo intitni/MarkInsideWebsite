@@ -15,13 +15,15 @@ struct Banner: Component {
 
             Div {
                 H1("MarkInside")
-                .class("leading-[1em] h-[1em] mb-0 mt-0")
+                .class("leading-[1em] h-[1em] mb-0 mt-0 font-bold")
             }
             .class("text-center")
 
             Div {
                 Paragraph(language.appDescription)
+                .class("mb-0")
                 language.supportedFeatures
+                .class("mb-0")
             }
             .class("text-center text-[#d9e6ff]")
 
@@ -34,7 +36,7 @@ struct Banner: Component {
             }
             .class("flex flex-row space-x-1")
         }
-        .class("flex flex-col items-center justify-center space-y-2 max-w-[min(580px, 100%)]")
+        .class("flex flex-col items-center justify-center space-y-3 max-w-[min(580px, 100%)]")
     }
 }
 
@@ -46,7 +48,7 @@ private struct DownloadFromMacAppStoreBadge: Component {
             url: url,
             label: { Image(imagePath).class("h-[54px]") }
         )
-        .class("shadow-none")
+        .class("shadow-none hover:shadow-none")
     }
 }
 
