@@ -23,9 +23,24 @@ h2 {
   font-weight: bold;
 }
 
+h3 {
+  margin: 2em 0 0.6em 0;
+  color: white;
+}
+
 p {
   font-size: 1em;
-  margin-bottom: 1em;
+  line-height: 1.3em;
+  margin-bottom: 0.7em;
+}
+
+ul {
+  margin-bottom: 1.1em;
+}
+
+li {
+  list-style-type: square;
+  list-style-position: inside;
 }
 
 p.description {
@@ -62,4 +77,10 @@ a:hover {
   p {
     font-size: 0.8rem;
   }
+}
+
+@layer components {
+    .template-image {
+        @apply max-w-[100px];
+    }
 }

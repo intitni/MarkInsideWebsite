@@ -1,7 +1,7 @@
 import Plot
 import Publish
 
-struct Body: Component {
+struct IndexBody: Component {
     var content: Component
 
     var body: Component {

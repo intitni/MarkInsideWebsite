@@ -1,5 +1,5 @@
 module.exports = {
-  content: ['Sources/**/*.swift'],
+  content: ['Sources/**/*.swift', 'Content/**/*.md'],
   theme: {
     extend: {},
   },

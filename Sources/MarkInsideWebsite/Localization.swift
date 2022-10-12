@@ -2,10 +2,35 @@ import Foundation
 import Plot
 import Publish
 
+protocol LocalizedComponent {
+    associatedtype I18nKey: Hashable
+    var language: Language { get }
+    var i18nDict: [Language: [I18nKey: String]] { get }
+}
+
+extension LocalizedComponent {
+    func t(_ key: I18nKey, file: StaticString = #file, line: UInt = #line) -> String {
+        let raw = i18nDict[language]?[key] ?? i18nDict[.xDefault]?[key]
+            ?? "\(file):\(line) - \(String(describing: key)) is not translated"
+        return raw
+    }
+
+    func t(parsing key: I18nKey, file: StaticString = #file, line: UInt = #line) -> Component {
+        let markdown = Markdown(t(key, file: file, line: line))
+        return markdown.body
+    }
+}
+
 extension Location {
     var language: Language {
         if let section = self as? Section<MarkInsideWebsite> {
             switch section.id {
+            case MarkInsideWebsite.SectionID.zh_cn:
+                return .chinese
+            }
+        }
+        if let item = self as? Item<MarkInsideWebsite> {
+            switch item.sectionID {
             case MarkInsideWebsite.SectionID.zh_cn:
                 return .chinese
             }
@@ -15,7 +40,7 @@ extension Location {
 }
 
 extension Language {
-var appDescription: String {
+    var appDescription: String {
         switch self {
         case .chinese:
             return "你并不需要一个高端的笔记软件去创建、编辑、预览"
@@ -51,24 +76,6 @@ var appDescription: String {
                 .text(", and "),
                 .span(.class("font-bold"), .text("any HTML"))
             )
-        }
-    }
-
-    var changelog: String {
-        switch self {
-        case .chinese:
-            return "版本记录"
-        default:
-            return "Change Log"
-        }
-    }
-
-    var privacyPolicy: String {
-        switch self {
-        case .chinese:
-            return "隐私协议"
-        default:
-            return "Privacy Policy"
         }
     }
 

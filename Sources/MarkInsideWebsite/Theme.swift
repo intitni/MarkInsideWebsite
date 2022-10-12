@@ -19,7 +19,7 @@ private struct AHTMLFactory<Site: Website>: HTMLFactory {
             .lang(context.site.language),
             .customHead(for: index, on: context.site),
             .component(
-                Body(content: index.content.body.node)
+                IndexBody(content: index.content.body.node)
                 .environmentValue(context.site.links, key: .links)
                 .environmentValue(index.language, key: .language)
             )
@@ -34,7 +34,7 @@ private struct AHTMLFactory<Site: Website>: HTMLFactory {
             .lang(context.site.language),
             .customHead(for: section, on: context.site),
             .component(
-                Body(content: section.content.body.node)
+                IndexBody(content: section.content.body.node)
                 .environmentValue(context.site.links, key: .links)
                 .environmentValue(section.language, key: .language)
             )
@@ -44,14 +44,38 @@ private struct AHTMLFactory<Site: Website>: HTMLFactory {
     func makeItemHTML(for item: Item<Site>, context: PublishingContext<Site>) throws -> HTML {
         HTML(
             .lang(context.site.language),
-            .customHead(for: item, on: context.site)
+            .customHead(for: item, on: context.site),
+            .component(
+                {
+                    switch item.path.string {
+                    case let x where x.hasSuffix("templates"):
+                        return PageBody(content: TemplatesPageContent())
+                    default:
+                        return PageBody(content: item.content.body.node)
+                    }
+                }()
+                .environmentValue(context.site.links, key: .links)
+                .environmentValue(item.language, key: .language)
+            )
         )
     }
 
     func makePageHTML(for page: Page, context: PublishingContext<Site>) throws -> HTML {
         HTML(
             .lang(context.site.language),
-            .customHead(for: page, on: context.site)
+            .customHead(for: page, on: context.site),
+            .component(
+                {
+                    switch page.path.string {
+                    case let x where x.hasSuffix("templates"):
+                        return PageBody(content: TemplatesPageContent())
+                    default:
+                        return PageBody(content: page.content.body.node)
+                    }
+                }()
+                .environmentValue(context.site.links, key: .links)
+                .environmentValue(page.language, key: .language)
+            )
         )
     }
 
