@@ -88,15 +88,6 @@ extension Language {
         }
     }
 
-    var downloadFromAppStoreLink: String {
-        switch self {
-        case .chinese:
-            return "/DownloadFromMAS_US.svg"
-        default:
-            return "/DownloadFromMAS_US.svg"
-        }
-    }
-
     var twitterCardPath: Path {
         switch self {
         case .chinese:

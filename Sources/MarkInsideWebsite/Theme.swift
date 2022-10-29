@@ -20,8 +20,8 @@ private struct AHTMLFactory<Site: Website>: HTMLFactory {
             .customHead(for: index, on: context.site),
             .component(
                 IndexBody(content: index.content.body.node)
-                .environmentValue(context.site.links, key: .links)
-                .environmentValue(index.language, key: .language)
+                    .environmentValue(context.site.links, key: .links)
+                    .environmentValue(index.language, key: .language)
             )
         )
     }
@@ -35,8 +35,8 @@ private struct AHTMLFactory<Site: Website>: HTMLFactory {
             .customHead(for: section, on: context.site),
             .component(
                 IndexBody(content: section.content.body.node)
-                .environmentValue(context.site.links, key: .links)
-                .environmentValue(section.language, key: .language)
+                    .environmentValue(context.site.links, key: .links)
+                    .environmentValue(section.language, key: .language)
             )
         )
     }
@@ -54,8 +54,8 @@ private struct AHTMLFactory<Site: Website>: HTMLFactory {
                         return PageBody(content: item.content.body.node)
                     }
                 }()
-                .environmentValue(context.site.links, key: .links)
-                .environmentValue(item.language, key: .language)
+                    .environmentValue(context.site.links, key: .links)
+                    .environmentValue(item.language, key: .language)
             )
         )
     }
@@ -73,19 +73,19 @@ private struct AHTMLFactory<Site: Website>: HTMLFactory {
                         return PageBody(content: page.content.body.node)
                     }
                 }()
-                .environmentValue(context.site.links, key: .links)
-                .environmentValue(page.language, key: .language)
+                    .environmentValue(context.site.links, key: .links)
+                    .environmentValue(page.language, key: .language)
             )
         )
     }
 
-    func makeTagListHTML(for page: TagListPage, context: PublishingContext<Site>) throws -> HTML? {
+    func makeTagListHTML(for _: TagListPage, context _: PublishingContext<Site>) throws -> HTML? {
         return nil
     }
 
     func makeTagDetailsHTML(
-        for page: TagDetailsPage,
-        context: PublishingContext<Site>
+        for _: TagDetailsPage,
+        context _: PublishingContext<Site>
     ) throws -> HTML? {
         return nil
     }
@@ -105,7 +105,9 @@ extension Node where Context == HTML.DocumentContext {
             .title(title),
             .description(site.description),
             .twitterCardType(.summaryLargeImage),
-            .forEach(["/styles.css"]) { .stylesheet($0) },
+            .forEach(["/styles.css"]) {
+                .stylesheet($0 + "?random=\(String(Int.random(in: 0 ... 1000)))")
+            },
             .viewport(.accordingToDevice),
             .unwrap(site.favicon) { .favicon($0) },
             .socialImageLink({

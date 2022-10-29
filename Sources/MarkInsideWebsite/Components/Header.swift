@@ -25,8 +25,11 @@ struct Header: Component {
                     Paragraph {
                         Link(t(.templateTitle), url: t(.templatePath))
                     }
-                }.class("flex flex-row justify-end space-x-4")
-            }.class("flex flex-row justify-between text-xs mt-8")
+                    Paragraph {
+                        Link(t(.languageTitle), url: t(.languagePath))
+                    }
+                }.class("flex flex-row justify-center [&>p]:text-[0.8rem] [&>p]:md:text-[1em] md:justify-end space-x-4 flex-wrap")
+            }.class("flex flex-col md:flex-row items-stretch md:items-start justify-between text-xs mt-8")
         }
     }
 }
@@ -39,6 +42,8 @@ extension Header: LocalizedComponent {
         case privacyPolicyURL
         case templateTitle
         case templatePath
+        case languageTitle
+        case languagePath
     }
 
     var i18nDict: [Language: [I18nKey: String]] { [
@@ -51,18 +56,22 @@ extension Header: LocalizedComponent {
                 case .privacyPolicyURL: return links.privacyPolicyURL.absoluteString
                 case .templateTitle: return "模板"
                 case .templatePath: return "/zh-cn/templates"
+                case .languageTitle: return "English"
+                case .languagePath: return "/"
                 }
             }()
         },
         .xDefault: I18nKey.allCases.reduce(into: [:]) { partialResult, key in
             partialResult[key] = {
                 switch key {
-                case .changelogTitle: return "Change-log"
+                case .changelogTitle: return "Changelog"
                 case .changelogURL: return links.changeLogURL.absoluteString
                 case .privacyPolicyTitle: return "Pivacy Policy"
                 case .privacyPolicyURL: return links.privacyPolicyURL.absoluteString
                 case .templateTitle: return "Templates"
                 case .templatePath: return "/templates"
+                case .languageTitle: return "中文"
+                case .languagePath: return "/zh-cn"
                 }
             }()
         },
@@ -81,11 +90,11 @@ struct HomeButton: Component {
     var body: Component {
         Link(url: t(.homePath)) {
             leftArrowIcon
-            Image("/AppIcon.png")
-                .class("max-h-10 drop-shadow-sm")
+            Image("/AppIconCompact.png")
+                .class("max-h-10 drop-shadow-sm pl-1 pr-2 py-1")
             Div {
                 Paragraph(t(.title))
-                    .class("leading-[1em] h-[1em] mb-0 mt-0 font-bold")
+                    .class("leading-[1em] h-[1em] mb-0 mt-0 font-bold shadow-sm")
             }
             .class("text-left flex flex-col justify-start items.center")
         }

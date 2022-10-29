@@ -13,8 +13,11 @@ struct TemplatesPageContent: Component {
                 </svg>
                 """)
                 Span(html: t(.title))
-            }.class("flex flex-row items-center space-x-1")
+            }.class("flex flex-row items-center space-x-1 text-left")
             t(parsing: .introduction)
+            Div {
+                t(parsing: .usage)
+            }.class("p-4 pb-3 bg-slate-300 bg-opacity-20 rounded-lg text-[0.8em]")
             Template(
                 title: t(.qrCodeTitle),
                 imagePath: "/templates/QRCode.markinside.template.png",
@@ -35,7 +38,7 @@ struct TemplatesPageContent: Component {
                 imagePath: "/templates/SyntaxHighlighting.markinside.template.png",
                 introduction: t(parsing: .syntaxHighlightingIntroduction)
             )
-        }
+        }.class("[&_code]:border-[1px] [&_code]:border-slate-200 [&_code]:border-solid [&_code]:rounded-sm [&_code]:text-[0.8em] [&_code]:px-0.5 [&_code]:bg-opacity-10 [&_code]:bg-white")
     }
 }
 
@@ -73,6 +76,7 @@ extension TemplatesPageContent: LocalizedComponent {
     enum I18nKey: Hashable, CaseIterable {
         case title
         case introduction
+        case usage
         case qrCodeTitle
         case qrCodeIntroduction
         case markdownTitle
@@ -88,8 +92,12 @@ extension TemplatesPageContent: LocalizedComponent {
             partialResult[key] = {
                 switch key {
                 case .title:
-                    return "模板"
-                case .introduction:
+                    return "模板 (v1.3.0+)"
+                case .introduction: 
+                    return """
+                    MarkInside 中的模板就像很多其他 app 中的插件那样，能够绕过懒惰的开发者为 MarkInside 带来更多的功能。
+                    """
+                case .usage:
                     return """
                     只需要将下方的图片拖入模板文件夹即可安装对应模板。模板文件夹可以通过点击菜单栏的 `文件 > 模板收藏夹 > 打开模板文件夹` 打开。添加之后，模板会出现在 `模板收藏夹` 中。
                     
@@ -132,10 +140,14 @@ extension TemplatesPageContent: LocalizedComponent {
             partialResult[key] = {
                 switch key {
                 case .title:
-                    return "Templates"
-                case .introduction:
+                    return "Templates (v1.3.0+)"
+                case .introduction: 
                     return """
-                    To install a template, just drag the images below into the template folder. You can open the template folder by clicking `File > Template Collection > Open Template Folder` from the menu bar. The installed templates will be available in `Template Collection` after that.
+                    Templates in MarkInside are like plugins in other apps. It helps you to enhance MarkInside without asking the lazy developer.
+                    """
+                case .usage:
+                    return """
+                    To install a template, just drag the images below into the template folder. You can open the template folder by clicking `File > Template Collection > Open Template Folder` from the menu bar. The installed templates will be available in the `Template Collection` after that.
                     
                     You can also store the templates anywhere and use them by clicking `File > Use Template`. All files created by MarkInside can be used as templates.
                     """

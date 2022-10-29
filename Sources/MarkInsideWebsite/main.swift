@@ -22,7 +22,7 @@ struct MarkInsideWebsite: Website {
 
 struct Links {
     var appStoreURL: URL { URL(string: "https://apps.apple.com/cn/app/markinside/id1551813400")! }
-    var windowsStoreURL: URL { URL(string: "https://markinside.intii.com")! }
+    var windowsStoreURL: URL { URL(string: "https://www.microsoft.com/store/apps/9PGRHRK83M62")! }
     var changeLogURL: URL { URL(string: "https://www.craft.do/s/3U2bTBDh3YGYG7")! }
     var privacyPolicyURL: URL { URL(string: "https://www.craft.do/s/202QeKkBT1MksS")! }
     var gTagURL: URL { URL(string: "https://www.googletagmanager.com/gtag/js?id=G-GXHVET7ERS")! }
@@ -35,12 +35,5 @@ extension Website {
 // This will generate your website using the built-in Foundation theme:
 try MarkInsideWebsite().publish(
     withTheme: .this,
-    deployedUsing: .gitHub("intitni/MarkInsideWebsite"),
-    additionalSteps: [
-        .installPlugin(.tailwindcss(
-            themeFilePath: "Resources/theme.css",
-            configFilePath: "Resources/tailwind.config.js",
-            outputFilePath: "styles.css"
-        )),
-    ]
+    deployedUsing: .gitHub("intitni/MarkInsideWebsite")
 )

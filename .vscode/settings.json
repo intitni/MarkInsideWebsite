@@ -1,1 +1,11 @@
-{}
+{
+    "lldb.library": "/Applications/Xcode-14.0.1.app/Contents/SharedFrameworks/LLDB.framework/Versions/A/LLDB",
+    "swift.swiftEnvironmentVariables": {},
+    "grammarly.selectors": [
+        {
+            "language": "swift",
+            "scheme": "file",
+            "pattern": "Sources/MarkInsideWebsite/Components/TemplatesPageContent.swift"
+        }
+    ]
+}
