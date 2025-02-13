@@ -23,8 +23,10 @@ struct MarkInsideWebsite: Website {
 struct Links {
     var appStoreURL: URL { URL(string: "https://apps.apple.com/cn/app/markinside/id1551813400")! }
     var windowsStoreURL: URL { URL(string: "https://www.microsoft.com/store/apps/9PGRHRK83M62")! }
-    var changeLogURL: URL { URL(string: "https://www.craft.do/s/3U2bTBDh3YGYG7")! }
-    var privacyPolicyURL: URL { URL(string: "https://www.craft.do/s/202QeKkBT1MksS")! }
+    var changeLogURL: URL { URL(string: "https://intii.craft.me/3U2bTBDh3YGYG7")! }
+    var changeLogChineseURL: URL { URL(string: "https://intii.craft.me/EDRauaO42w8f7g")! }
+    var privacyPolicyURL: URL { URL(string: "https://intii.craft.me/202QeKkBT1MksS")! }
+    var privacyPolicyChineseURL: URL { URL(string: "https://intii.craft.me/DQ7DmXraIklRHL")! }
     var gTagURL: URL { URL(string: "https://www.googletagmanager.com/gtag/js?id=G-GXHVET7ERS")! }
 }
 

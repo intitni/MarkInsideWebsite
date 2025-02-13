@@ -51,9 +51,9 @@ extension Header: LocalizedComponent {
             partialResult[key] = {
                 switch key {
                 case .changelogTitle: return "版本记录"
-                case .changelogURL: return links.changeLogURL.absoluteString
+                case .changelogURL: return links.changeLogChineseURL.absoluteString
                 case .privacyPolicyTitle: return "隐私协议"
-                case .privacyPolicyURL: return links.privacyPolicyURL.absoluteString
+                case .privacyPolicyURL: return links.privacyPolicyChineseURL.absoluteString
                 case .templateTitle: return "模板"
                 case .templatePath: return "/zh-cn/templates"
                 case .languageTitle: return "English"
