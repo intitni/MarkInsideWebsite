@@ -65,6 +65,10 @@ extension Language {
                 .span(.class("font-bold"), .text("LaTeX 数学公式")),
                 .text("、"),
                 .span(.class("font-bold"), .text("Mermaid")),
+                .text("、"),
+                .span(.class("font-bold"), .text("Markdown")),
+                .text("、"),
+                .span(.class("font-bold"), .text("思维导图")),
                 .text(" 和"),
                 .span(.class("font-bold"), .text("任意 HTML"))
             )
@@ -73,6 +77,10 @@ extension Language {
                 .span(.class("font-bold"), .text("LaTeX Math")),
                 .text(", "),
                 .span(.class("font-bold"), .text("Mermaid")),
+                .text(", "),
+                .span(.class("font-bold"), .text("Markdown")),
+                .text(", "),
+                .span(.class("font-bold"), .text("Mind Map")),
                 .text(", and "),
                 .span(.class("font-bold"), .text("any HTML"))
             )

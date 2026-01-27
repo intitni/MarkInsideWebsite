@@ -1,21 +1,21 @@
-## Image is the Source File
+## Images Are the Source Files
 
-No \*.markinside file is generated alongside when you save images from code. The images are just the single source of truth. You can simply✱ open them in MarkInside to make changes.
+No \*.markinside file is created when you export an image from code — the image itself is the single source of truth. To edit an image's content, simply✱ open it in MarkInside.
 
-<p class="note">✱ Some apps or services may compress your images and wipe away source codes embed inside. You can try to save it as SVG or PDF to bypass this issue.</p>
+<p class="note">✱ Some apps or services may compress PNG files and remove any embedded source code. If that happens, try exporting as SVG or PDF instead.</p>
 
 ## Live Preview
 
-MarkInside offers you a side-by-side editor, you can see the result as you type or change preferences.
+MarkInside provides a side-by-side editor with a live preview so changes to your code or settings are reflected immediately.
 
-You can adjust windows size and canvas background color, to see how well the output image will suit your use case.
+You can resize the preview area and change the canvas background color to better match the environment where you'll use the image.
 
 ## Use Everywhere
 
-The generated files are just images in PNG, SVG, and PDF. This means you can use them everywhere, without the need for the viewer to support rendering Mermaid, etc. 
+The files MarkInside generates are standard PNG, SVG, and PDF images. That means you can use them anywhere — no special renderer (for example, Mermaid) is required to view them.
 
-## Power-up with Blocks & Templates
+## Power Up with Blocks & Templates
 
-MarkInside's block-based editor allows you to keep complicated content readable. With a reasonable arrangement of code blocks, you can also make reusable templates to power up MarkInside. 
+The block-based editor makes complex content easier to read and maintain. By organizing content into code blocks you can build reusable templates that extend what MarkInside can do.
 
-Check the [templates](/templates) we made to see how it works!
+See the [templates](/templates) we created to learn more.
