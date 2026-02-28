@@ -1,0 +1,19 @@
+---
+const pathname = Astro.url.pathname;
+const isChinese = pathname.startsWith('/zh-cn');
+---
+
+<footer class="flex justify-between items-center h-30 text-xs">
+  <p>©2022 MarkInside</p>
+  <p>
+    <a href="mailto:markinsideapp@intii.com">{isChinese ? '联系我' : 'Contact Me'}</a>
+  </p>
+</footer>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GXHVET7ERS"></script>
+<script is:inline>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-GXHVET7ERS');
+</script>

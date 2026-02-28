@@ -1,0 +1,82 @@
+---
+interface Props {
+  locale: "en" | "zh-cn";
+}
+
+const { locale } = Astro.props;
+const isChinese = locale === "zh-cn";
+
+const appDescription = isChinese
+  ? "你并不需要一个高端的笔记软件去创建、编辑、预览"
+  : "You don’t need a fancy note editor to\ncreate, edit and preview";
+
+const appStoreBadge = isChinese
+  ? "/DownloadFromMAS_CN.svg"
+  : "/DownloadFromMAS_US.svg";
+const windowsStoreBadge = isChinese
+  ? "/DownloadFromMicrosoft_CN.svg"
+  : "/DownloadFromMicrosoft_US.svg";
+---
+
+<section
+  class="flex flex-col items-center justify-center space-y-3 max-w-[min(800px,100%)] mx-auto"
+>
+  <div class="md:w-70 md:h-70 w-44 h-44">
+    <img src="/AppIcon.png" alt="MarkInside" />
+  </div>
+
+  <div class="text-center">
+    <h1 class="leading-[1em] mb-0! mt-0! font-black">MarkInside</h1>
+    <div class="text-[#d9e6ff] mt-2!">
+      <p class="mb-0! mt-0!">{appDescription}</p>
+      {
+        isChinese ? (
+          <p class="mb-0! mt-0! ">
+            <span class="font-bold">LaTeX 数学公式</span>、
+            <span class="font-bold">Mermaid</span>、
+            <span class="font-bold">Markdown</span>、
+            <span class="font-bold">思维导图</span> 和
+            <span class="font-bold">任意 HTML</span>
+          </p>
+        ) : (
+          <p class="mb-0! mt-0! ">
+            <span class="font-bold">LaTeX Math</span>,{" "}
+            <span class="font-bold">Mermaid</span>,
+            <span class="font-bold">Markdown</span>,{" "}
+            <span class="font-bold">Mind Map</span>, and
+            <span class="font-bold">any HTML</span>
+          </p>
+        )
+      }
+    </div>
+  </div>
+
+  <div class="flex flex-row space-x-2!">
+    <a
+      href="https://apps.apple.com/cn/app/markinside/id1551813400"
+      target="_blank"
+      class="download-badge shadow-none hover:shadow-none"
+    >
+      <img src={appStoreBadge} alt="Download from App Store" class="h-10!" />
+    </a>
+    <a
+      href="https://www.microsoft.com/store/apps/9PGRHRK83M62"
+      target="_blank"
+      class="download-badge shadow-none hover:shadow-none"
+    >
+      <img
+        src={windowsStoreBadge}
+        alt="Download from Microsoft Store"
+        class="h-10!"
+      />
+    </a>
+  </div>
+
+  <div class="pt-8">
+    <img
+      src="/HomePageScreenshot.png"
+      alt="Home Page Screenshot"
+      class="hero-screenshot"
+    />
+  </div>
+</section>

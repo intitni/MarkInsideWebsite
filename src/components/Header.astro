@@ -1,0 +1,115 @@
+---
+import LanguageSelect from "@astrojs/starlight/components/LanguageSelect.astro";
+import { Icon } from "@astrojs/starlight/components";
+
+const pathname = Astro.url.pathname;
+const isChinese = pathname.startsWith("/zh-cn");
+
+const changeLogURL = isChinese
+  ? "https://intii.craft.me/EDRauaO42w8f7g"
+  : "https://intii.craft.me/3U2bTBDh3YGYG7";
+const privacyPolicyURL = isChinese
+  ? "https://intii.craft.me/DQ7DmXraIklRHL"
+  : "https://intii.craft.me/202QeKkBT1MksS";
+const templatesPath = isChinese ? "/zh-cn/templates" : "/templates";
+
+const i18n = isChinese
+  ? {
+      changelogTitle: "版本记录",
+      privacyPolicyTitle: "隐私协议",
+      templatesTitle: "模板",
+    }
+  : {
+      changelogTitle: "Changelog",
+      privacyPolicyTitle: "Privacy Policy",
+      templatesTitle: "Templates",
+    };
+---
+
+<div class="header-inner">
+  <div class="flex items-center space-x-1">
+    <details class="relative min-[50rem]:hidden m-0 flex items-center">
+      <summary
+        class="menu-summary text-[0.85rem] pr-4 py-1 cursor-pointer select-none"
+        ><Icon name="bars" /></summary
+      >
+      <nav
+        class="absolute left-0 top-[calc(100%+0.5rem)] flex flex-col min-w-44 gap-[0.55rem] px-[0.8rem] py-[0.65rem] rounded-lg bg-white text-gray-700 backdrop-blur-[14px] border border-white/20 z-20 shadow-2xl"
+        aria-label="Site links"
+      >
+        <a class="nav-link" href={changeLogURL}>{i18n.changelogTitle}</a>
+        <a class="nav-link" href={privacyPolicyURL}>{i18n.privacyPolicyTitle}</a
+        >
+        <a class="nav-link" href={templatesPath}>{i18n.templatesTitle}</a>
+      </nav>
+    </details>
+
+    <div
+      class="title-wrapper sl-flex pl-1! pr-2! py-1! rounded-lg bg-white/12 print:hidden"
+    >
+      <a
+        href={isChinese ? "/zh-cn" : "/"}
+        class="flex shadow-none! hover:shadow-none! items-center space-x-1!"
+        aria-label="MarkInside Home"
+      >
+        <img src="/AppIcon.png" alt="MarkInside" class="h-8 w-8 mr-2" />
+        <span class="font-bold text-sm">MarkInside</span>
+      </a>
+    </div>
+  </div>
+  <div class="sl-flex print:hidden right-group">
+    <nav
+      class="hidden min-[50rem]:flex gap-4 items-center flex-wrap text-[0.85rem]"
+      aria-label="Site links"
+    >
+      <a class="nav-link" href={changeLogURL}>{i18n.changelogTitle}</a>
+      <a class="nav-link" href={privacyPolicyURL}>{i18n.privacyPolicyTitle}</a>
+      <a class="nav-link" href={templatesPath}>{i18n.templatesTitle}</a>
+    </nav>
+
+    <LanguageSelect />
+  </div>
+</div>
+
+<style>
+  @layer starlight.core {
+    :global(.page > header.header) {
+      border-bottom: none;
+      background-color: rgb(62 111 207 / 0.42);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .header-inner {
+      display: flex;
+      gap: var(--sl-nav-gap);
+      justify-content: space-between;
+      align-items: center;
+      height: 100%;
+    }
+
+    .title-wrapper {
+      overflow: clip;
+      padding: 0.25rem;
+      margin: -0.25rem;
+      min-width: 0;
+    }
+
+    .right-group {
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .menu-summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .menu-summary {
+      list-style: none;
+    }
+
+    .menu-summary::marker {
+      content: "";
+    }
+  }
+</style>
