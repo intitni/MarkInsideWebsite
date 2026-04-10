@@ -1,0 +1,124 @@
+---
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import Changelog from "../../../components/change-log.astro";
+import ChangeLogItem from "../../../components/change-log-item.astro";
+import PreviousChangeLog from "../../../components/previous-change-log.astro";
+
+const modules = import.meta.glob(`../../../changelog/zh-cn/*`, { eager: true });
+const { slug } = Astro.params;
+let changelogs = Object.entries(modules).map(([file, mod]) => ({ ...(mod as any), file }));
+// Determine latest version from filenames in src/changelog/zh-cn (highest semantic version)
+const allFiles = Object.keys(modules || {});
+function versionCompare(a: string, b: string) {
+  const pa = a.split('.').map((n) => parseInt(n, 10) || 0);
+  const pb = b.split('.').map((n) => parseInt(n, 10) || 0);
+  for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+    const na = pa[i] || 0;
+    const nb = pb[i] || 0;
+    if (na !== nb) return na - nb;
+  }
+  return 0;
+}
+const filenames = allFiles
+  .map((path) => path.split('/').pop().replace(/\..*$/, ''))
+  .filter((name) => /^\d+\.\d+\.\d+$/.test(name));
+const latestVersion = filenames.sort(versionCompare).pop() || null;
+const noTag = slug === undefined;
+const filteredChangelogs = changelogs
+  .filter((changelog) => {
+    if (noTag) {
+      return true;
+    }
+    return changelog.frontmatter.tag === slug;
+  })
+  .sort((a, b) => b.frontmatter.date.localeCompare(a.frontmatter.date));
+if (filteredChangelogs.length === 0) {
+  return Astro.redirect("/zh-cn/404");
+}
+
+// Determine the version to use for OG image
+const version = noTag ? (latestVersion || slug) : slug;
+
+// Determine OG image path
+let ogImagePath = `https://cursorcrane.expressionloss.com/changelog-banners/${version}/zh-cn/og.png`;
+
+export const prerender = false;
+
+function getPreviousChangeLog(changelog: any) {
+  const version = changelog.frontmatter.changelog?.previousVersion;
+  const tag = changelog.frontmatter.changelog?.previousTag;
+  if (version && tag) {
+    const previousChangelog = changelogs.find((c) => c.frontmatter.tag === tag);
+    if (previousChangelog) {
+      return {
+        previousVersion: version,
+        tag: changelog.frontmatter.tag,
+        previousChangelog: previousChangelog,
+      };
+    }
+  }
+  return null;
+}
+---
+
+<StarlightPage
+  frontmatter={{
+    title: "Changelog",
+    description: "Changelog of Cursor Crane",
+    template: noTag ? "doc" : "splash",
+    hideTitle: !noTag,
+    hideHeader: false,
+    tableOfContents: false,
+    prev: false,
+    next: false,
+    head: [
+      {
+        tag: "meta",
+        attrs: {
+          property: "og:image",
+          content: ogImagePath,
+        },
+      },
+      {
+        tag: "meta",
+        attrs: {
+          name: "twitter:image",
+          content: ogImagePath,
+        },
+      },
+    ],
+  }}
+>
+  <Changelog>
+    {
+      filteredChangelogs.map((changelog, index) => (
+        <>
+          <ChangeLogItem
+            version={changelog.frontmatter.title}
+            tag={changelog.frontmatter.tag}
+            channel={changelog.frontmatter.channel}
+            updated={changelog.frontmatter.date}
+            hideTitle={changelog.frontmatter.hideTitle}
+          >
+            <changelog.Content />
+            {() => {
+              const info = getPreviousChangeLog(changelog);
+              if (!info) {
+                return null;
+              }
+              const { previousVersion, tag, previousChangelog } = info;
+              return (
+                <PreviousChangeLog previousVersion={previousVersion} tag={tag}>
+                  <previousChangelog.Content />
+                </PreviousChangeLog>
+              );
+            }}
+          </ChangeLogItem>
+          {noTag && index < filteredChangelogs.length - 1 && (
+            <hr class="my-8 border-t border-gray-200 dark:border-gray-700" />
+          )}
+        </>
+      ))
+    }
+  </Changelog>
+</StarlightPage>
