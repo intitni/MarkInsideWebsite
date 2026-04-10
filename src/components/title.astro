@@ -1,0 +1,24 @@
+---
+import Default from "@astrojs/starlight/components/PageTitle.astro";
+const hideTitle = Astro.locals.starlightRoute.entry.data.hideTitle ?? false;
+---
+
+{
+  hideTitle ? (
+    <></>
+    <style>
+        .content-panel {
+            padding-top: 0px !important;
+            border-top: none !important;
+        }
+      .sl-container {
+        padding-top: 0px !important;
+      }
+      .sl-container::after {
+        border-bottom: none !important;
+      }
+    </style>
+  ) : (
+    <Default {...Astro.props} />
+  )
+}
