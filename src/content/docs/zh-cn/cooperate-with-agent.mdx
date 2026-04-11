@@ -1,0 +1,200 @@
+---
+title: 与 AI 智能体协作
+description: 通过 MCP 或插件将 MarkInside 连接到 AI 智能体。
+template: splash
+---
+
+import { Tabs, TabItem, FileTree } from '@astrojs/starlight/components';
+
+从 1.9.0 开始，MarkInside 提供了本地 **MCP（Model Context Protocol）服务器**。你可以直接连接这个 MCP 服务器，也可以安装一个封装连接流程的插件。
+
+## 直接连接 MCP 服务器
+
+默认情况下，服务器监听端口为 **9448**。
+
+你可以在 **MarkInside → Settings → MCP Server** 中查看或修改端口。
+
+将下面的 `<PORT>` 替换成你的实际端口号（如果没有修改过，使用 `9448`）。
+
+<Tabs syncKey="agent">
+<TabItem label="Codex">
+
+将以下配置加入 Codex 配置文件：
+
+- 用户级：`~/.codex/config.toml`
+- 项目级：`.codex/config.toml`
+
+```toml
+[mcp_servers.markinside]
+url = "http://127.0.0.1:<PORT>/mcp"
+```
+
+</TabItem>
+<TabItem label="Claude Code">
+
+注册 MCP 服务器：
+
+```bash
+claude mcp add --transport http markinside http://127.0.0.1:<PORT>/mcp
+```
+
+如果要注册到项目作用域，运行：
+
+```bash
+claude mcp add --transport http --scope project markinside http://127.0.0.1:<PORT>/mcp
+```
+
+</TabItem>
+</Tabs>
+
+## 通过智能体插件连接
+
+你也可以通过智能体插件使用 MarkInside：它仍然连接同一个 MCP 服务器，但会把 MCP 配置和工作流技能打包在一起。
+
+<Tabs syncKey="agent">
+<TabItem label="Codex">
+
+插件结构：
+
+<FileTree>
+- markinside/
+  - .codex-plugin/
+    - plugin.json
+  - .mcp.json
+  - skills/
+    - markinside/
+      - SKILL.md
+</FileTree>
+
+`markinside/.codex-plugin/plugin.json`：
+
+```json
+{
+  "name": "markinside",
+  "version": "0.1.0",
+  "description": "Skills and MCP config for MarkInside workflows.",
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json"
+}
+```
+
+`markinside/.mcp.json`：
+
+```json
+{
+  "mcpServers": {
+    "markinside": {
+      "url": "http://127.0.0.1:<PORT>/mcp"
+    }
+  }
+}
+```
+
+`markinside/skills/markinside/SKILL.md`：
+
+```md
+---
+name: markinside
+description: Use MarkInside MCP tools to create and edit code images.
+---
+
+Always use the MarkInside MCP tools first when users ask for image generation or edits in MarkInside.
+```
+
+在 marketplace 文件中注册插件：
+- 项目作用域：`$REPO_ROOT/.agents/plugins/marketplace.json`
+- 个人作用域：`~/.agents/plugins/marketplace.json`
+
+```json
+{
+  "name": "markinside-local-plugins",
+  "interface": {
+    "displayName": "MarkInside Local Plugins"
+  },
+  "plugins": [
+    {
+      "name": "markinside",
+      "source": {
+        "source": "local",
+        "path": "./plugins/markinside"
+      },
+      "policy": {
+        "installation": "AVAILABLE"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
+```
+
+如果你使用个人作用域，请将插件文件放到 `~/.codex/plugins/markinside`，并把 `path` 设为 `./.codex/plugins/markinside`。
+
+重启 Codex，打开 `/plugins`，选择你的本地 marketplace，然后安装 `markinside`。
+
+</TabItem>
+<TabItem label="Claude Code">
+
+插件结构：
+
+<FileTree>
+- markinside/
+  - .claude-plugin/
+    - plugin.json
+  - .mcp.json
+  - skills/
+    - markinside/
+      - SKILL.md
+</FileTree>
+
+`markinside/.claude-plugin/plugin.json`：
+
+```json
+{
+  "name": "markinside",
+  "version": "0.1.0",
+  "description": "Skills and MCP config for MarkInside workflows.",
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json"
+}
+```
+
+`markinside/.mcp.json`：
+
+```json
+{
+  "mcpServers": {
+    "markinside": {
+      "url": "http://127.0.0.1:<PORT>/mcp"
+    }
+  }
+}
+```
+
+`markinside/skills/markinside/SKILL.md`：
+
+```md
+---
+name: markinside
+description: Use MarkInside MCP tools to create and edit code images.
+---
+
+Always use the MarkInside MCP tools first when users ask for image generation or edits in MarkInside.
+```
+
+开发阶段可以直接加载：
+
+```bash
+claude --plugin-dir ./markinside
+```
+
+如果要长期安装，请在仓库（或个人插件仓库）中创建本地 marketplace，然后添加并安装：
+
+```text
+/plugin marketplace add ./path/to/your-marketplace-repo
+/plugin install markinside@<marketplace-name>
+```
+
+项目作用域可使用 `claude plugin install markinside@<marketplace-name> --scope project`，用户作用域则省略 `--scope`。
+
+</TabItem>
+</Tabs>

@@ -39,24 +39,14 @@ ul {
 	margin-bottom: 1.1em;
 }
 
-li {
-	list-style-type: square;
-	list-style-position: inside;
+/* Keep Starlight FileTree markers clean (no square bullets from global li styles). */
+starlight-file-tree ul,
+starlight-file-tree li {
+	list-style: none !important;
 }
 
 p.note {
 	opacity: 40%;
-}
-
-a {
-	box-shadow: inset 0 -8px 0 #ffffff33;
-	transition: box-shadow 0.15s linear;
-	padding: 0 2px;
-}
-
-a:hover {
-	box-shadow: inset 0 -30px 0 #ffffff33;
-	transition: box-shadow 0.15s linear;
 }
 
 @media screen and (max-width: 500px) {
@@ -79,7 +69,7 @@ a:hover {
 	--sl-color-bg-nav: #3e6fcf;
 	--sl-color-bg-sidebar: #3e6fcf;
 	--sl-color-bg-inline-code: rgb(255 255 255 / 0.1);
-	--sl-color-hairline-light: rgb(255 255 255 / 0.2);
+	--sl-color-hairline-light: rgba(255, 255, 255, 0.2);
 	--sl-color-text: #ffffff;
 	--sl-color-white: #ffffff;
 	--sl-color-gray-1: #d9e6ff;
@@ -92,9 +82,10 @@ a:hover {
 	--sl-color-accent: #ffffff;
 	--sl-color-accent-high: #ffffff;
 	--sl-content-width: 800px;
+	--ec-codeFontSize: 0.72rem;
+	--ec-codeLineHt: 1.3;
 }
 
-html[data-has-sidebar],
 html:not([data-has-sidebar]) {
 	--sl-content-width: 800px !important;
 }
@@ -105,19 +96,26 @@ html:not([data-has-sidebar]) {
 	--sl-color-bg-sidebar: #3e6fcf;
 }
 
-.sl-markdown :is(h1, h2, h3, p, ul, li, a) {
+.sl-markdown-content :is(h1, h2, h3, p, ul, li, a) {
 	color: white;
 }
 
-.sl-markdown h1:first-child {
-	display: none;
+.content-panel h1, 
+.sl-markdown-content h1 {
+	font-size: 2.4rem;
 }
 
-.sl-markdown h2 {
-	font-size: 1.7em;
+.sl-markdown-content h2,
+.sl-markdown-content .sl-heading-wrapper.level-h2 > h2 {
+	font-size: 1.8rem;
 }
 
-.sl-markdown p code,
+.sl-markdown-content h3,
+.sl-markdown-content .sl-heading-wrapper.level-h3 > h3 {
+	font-size: 1.6rem;
+}
+
+.sl-markdown-content p code,
 .template-gallery code {
 	border: 1px solid #e2e8f0;
 	border-radius: 0.125rem;
@@ -125,6 +123,16 @@ html:not([data-has-sidebar]) {
 	padding: 0 0.125rem;
 	background: rgb(255 255 255 / 0.1);
 }
+
+.sl-markdown-content pre {
+	padding: 1em;
+	background: rgba(0, 0, 0, 0.7);
+	overflow-x: auto;
+	font-size: 0.72rem;
+	line-height: 1.3;
+	box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.05);
+}
+
 
 .hero-screenshot {
 	filter: drop-shadow(0 25px 25px rgb(0 0 0 / 0.15));

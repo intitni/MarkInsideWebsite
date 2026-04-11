@@ -72,9 +72,11 @@ const cards = isChinese
 ---
 
 <section
-  class="template-gallery [&_p]:text-[1em] [&_p]:leading-[1.3em] [&_p]:mb-[0.7em] [&_a]:text-white [&_ul]:mb-[1.1em] [&_li]:list-square [&_li]:list-inside"
+  class="template-gallery mt-0! [&_p]:text-[1em] [&_p]:leading-[1.3em] [&_p]:mb-[0.7em] [&_a]:text-white [&_ul]:mb-[1.1em] [&_li]:list-square [&_li]:list-inside"
 >
-  <h2 class="flex flex-row items-center space-x-1 text-left">
+  <h1
+    class="mt-[2em]! mb-[1em]! flex flex-row items-center space-x-1 text-left"
+  >
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
@@ -86,7 +88,7 @@ const cards = isChinese
       ></path>
     </svg>
     <span>{title}</span>
-  </h2>
+  </h1>
 
   <p set:html={intro} />
 
@@ -96,8 +98,8 @@ const cards = isChinese
 
   {
     cards.map((card) => (
-      <div class="mx-auto my-8 text-sm">
-        <h3 class="text-lg font-bold">{card.title}</h3>
+      <div class="mx-auto my-8">
+        <h3 class="font-bold">{card.title}</h3>
         <p set:html={card.intro} />
         <div class="bg-blue-100 flex items-center justify-center p-2 rounded-lg border relative">
           <img
@@ -111,7 +113,7 @@ const cards = isChinese
             class="absolute top-1 right-1 py-1! px-2! border border-slate-300 rounded bg-slate-50 drop-shadow-2xl text-slate-500 text-xs shadow-none hover:shadow-none"
             aria-label={`Download ${card.title}`}
           >
-            <Icon name="cloud-download" size="24px" class="fill-gray-500"/>
+            <Icon name="cloud-download" size="24px" class="fill-gray-500" />
           </a>
         </div>
       </div>

@@ -10,6 +10,10 @@ import cloudflare from '@astrojs/cloudflare';
 export default defineConfig({
   site: "https://markinside.intii.com",
   output: "server",
+  server: {
+    host: "127.0.0.1",
+    port: 4321,
+  },
   integrations: [
     starlight({
       title: "MarkInside for macOS and Windows",
@@ -47,6 +51,17 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
+    server: {
+      host: "127.0.0.1",
+      port: 4321,
+      strictPort: true,
+      hmr: {
+        protocol: "ws",
+        host: "127.0.0.1",
+        port: 4321,
+        clientPort: 4321,
+      },
+    },
   },
 
   adapter: cloudflare(),
