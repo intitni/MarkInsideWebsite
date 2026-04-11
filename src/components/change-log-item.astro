@@ -11,29 +11,25 @@ const { version, tag, updated, channel } = Astro.props;
 
 {
   (
-    <div id={tag} class="flex flex-col space-y-4">
-      <div class="flex flex-row space-x-2 mb-4">
-        <h2 class=" text-gray-700 font-bold m-0">{version}</h2>
-        {channel && <span class="text-sm text-gray-400">{channel}</span>}
+    <div id={tag} class="flex flex-col">
+      <div class="flex flex-row space-x-2">
+        <h2 class="text-(--sl-color-white) font-bold m-0!">{version}</h2>
+        {channel && <span class="text-sm text-blue-100/80">{channel}</span>}
       </div>
 
       {updated && (
-        <p class="text-gray-400 text-left mb-4">
+        <span class="m-0 text-blue-100/75 text-left">
           {new Date(updated).toLocaleDateString("en-US", {
             year: "numeric",
             month: "long",
             day: "numeric",
           })}
-        </p>
+        </span>
       )}
-      <slot />
 
-      <a
-        class="text-sky-500"
-        href={`https://github.com/intitni/cursor-crane-release/releases/tag/${tag}`}
-      >
-        Download
-      </a>
+      <div class="pt-4">
+        <slot />
+      </div>
     </div>
   )
 }

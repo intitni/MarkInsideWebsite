@@ -6,12 +6,15 @@ import PreviousChangeLog from "../../../components/previous-change-log.astro";
 
 const modules = import.meta.glob(`../../../changelog/zh-cn/*`, { eager: true });
 const { slug } = Astro.params;
-let changelogs = Object.entries(modules).map(([file, mod]) => ({ ...(mod as any), file }));
+let changelogs = Object.entries(modules).map(([file, mod]) => ({
+  ...(mod as any),
+  file,
+}));
 // Determine latest version from filenames in src/changelog/zh-cn (highest semantic version)
 const allFiles = Object.keys(modules || {});
 function versionCompare(a: string, b: string) {
-  const pa = a.split('.').map((n) => parseInt(n, 10) || 0);
-  const pb = b.split('.').map((n) => parseInt(n, 10) || 0);
+  const pa = a.split(".").map((n) => parseInt(n, 10) || 0);
+  const pb = b.split(".").map((n) => parseInt(n, 10) || 0);
   for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
     const na = pa[i] || 0;
     const nb = pb[i] || 0;
@@ -19,8 +22,14 @@ function versionCompare(a: string, b: string) {
   }
   return 0;
 }
+function getSortableVersion(changelog: any) {
+  const version = String(
+    changelog.frontmatter.title || changelog.frontmatter.tag || "",
+  ).trim();
+  return /^\d+\.\d+\.\d+$/.test(version) ? version : "0.0.0";
+}
 const filenames = allFiles
-  .map((path) => path.split('/').pop().replace(/\..*$/, ''))
+  .map((path) => (path.split("/").pop() ?? "").replace(/\..*$/, ""))
   .filter((name) => /^\d+\.\d+\.\d+$/.test(name));
 const latestVersion = filenames.sort(versionCompare).pop() || null;
 const noTag = slug === undefined;
@@ -31,13 +40,24 @@ const filteredChangelogs = changelogs
     }
     return changelog.frontmatter.tag === slug;
   })
-  .sort((a, b) => b.frontmatter.date.localeCompare(a.frontmatter.date));
+  .sort((a, b) => {
+    const versionDiff = versionCompare(
+      getSortableVersion(b),
+      getSortableVersion(a),
+    );
+    if (versionDiff !== 0) {
+      return versionDiff;
+    }
+    return String(b.frontmatter.date || "").localeCompare(
+      String(a.frontmatter.date || ""),
+    );
+  });
 if (filteredChangelogs.length === 0) {
   return Astro.redirect("/zh-cn/404");
 }
 
 // Determine the version to use for OG image
-const version = noTag ? (latestVersion || slug) : slug;
+const version = noTag ? latestVersion || slug : slug;
 
 // Determine OG image path
 let ogImagePath = `https://cursorcrane.expressionloss.com/changelog-banners/${version}/zh-cn/og.png`;
@@ -65,8 +85,8 @@ function getPreviousChangeLog(changelog: any) {
   frontmatter={{
     title: "Changelog",
     description: "Changelog of Cursor Crane",
-    template: noTag ? "doc" : "splash",
-    hideTitle: !noTag,
+    template: "splash",
+    hideTitle: false,
     hideHeader: false,
     tableOfContents: false,
     prev: false,
@@ -98,7 +118,6 @@ function getPreviousChangeLog(changelog: any) {
             tag={changelog.frontmatter.tag}
             channel={changelog.frontmatter.channel}
             updated={changelog.frontmatter.date}
-            hideTitle={changelog.frontmatter.hideTitle}
           >
             <changelog.Content />
             {() => {
@@ -115,7 +134,7 @@ function getPreviousChangeLog(changelog: any) {
             }}
           </ChangeLogItem>
           {noTag && index < filteredChangelogs.length - 1 && (
-            <hr class="my-8 border-t border-gray-200 dark:border-gray-700" />
+            <hr class="my-8 border-t border-white/20" />
           )}
         </>
       ))

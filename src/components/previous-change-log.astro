@@ -6,14 +6,14 @@ interface Props {
 
 const { previousVersion, tag } = Astro.props;
 const { slug } = Astro.params;
-const isVisible = slug === tag
+const isVisible = slug === tag;
 ---
 
 {
   isVisible && (
     <div>
       <div class="flex flex-row space-x-2 mb-4">
-        <h3 class=" text-gray-700 font-bold m-0">{previousVersion}</h3>
+        <h3 class="text-(--sl-color-white) font-bold m-0">{previousVersion}</h3>
       </div>
       <slot />
     </div>

@@ -5,12 +5,10 @@ import { Icon } from "@astrojs/starlight/components";
 const pathname = Astro.url.pathname;
 const isChinese = pathname.startsWith("/zh-cn");
 
-const changeLogURL = isChinese
-  ? "https://intii.craft.me/EDRauaO42w8f7g"
-  : "https://intii.craft.me/3U2bTBDh3YGYG7";
+const changeLogURL = isChinese ? "/zh-cn/changelog" : "/changelog";
 const privacyPolicyURL = isChinese
-  ? "https://intii.craft.me/DQ7DmXraIklRHL"
-  : "https://intii.craft.me/202QeKkBT1MksS";
+  ? "/zh-cn/privacy-policy"
+  : "/privacy-policy";
 const templatesPath = isChinese ? "/zh-cn/templates" : "/templates";
 
 const i18n = isChinese
