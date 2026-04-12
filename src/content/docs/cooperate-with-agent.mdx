@@ -1,14 +1,16 @@
 ---
 title: Cooperate with AI Agents
-description: Connect MarkInside to AI agents through MCP or plugins.
+description: Connect MarkInside to AI agents through MCP.
 template: splash
 ---
 
-import { Tabs, TabItem, FileTree } from '@astrojs/starlight/components';
+import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-Since 1.9.0, MarkInside provides a local **MCP (Model Context Protocol) server**. You can either connect to this MCP server directly, or install a plugin that wraps the connection flow.
+Since 1.9.0, MarkInside provides a local **MCP (Model Context Protocol) server**. By connecting MarkInside to AI agents like Codex and Claude Code through MCP, you can ask the agent in natural language to directly edit content in MarkInside and help you generate images.
 
-## Connet to the MCP Server Directly
+For example, if you want to generate a formula image for a normal distribution, you can simply tell the agent, "Help me create a normal distribution formula image in MarkInside." The agent will create a new document in MarkInside and automatically enter the corresponding formula. You can then keep asking it to refine the image until you are satisfied.
+
+## Connect to the MCP Server Directly
 
 By default, the server listens on port **9448**.
 
@@ -19,7 +21,13 @@ Replace `<PORT>` with your actual port number (use `9448` if unchanged).
 <Tabs syncKey="agent">
 <TabItem label="Codex">
 
-Add this to your Codex configuration file:
+First, add it to global scope using the Codex command:
+
+```bash
+codex mcp add --transport http markinside http://127.0.0.1:<PORT>/mcp
+```
+
+You can also add it directly in your configuration file:
 
 - User-level: `~/.codex/config.toml`
 - Project-level: `.codex/config.toml`
@@ -44,41 +52,7 @@ For project scope, run:
 claude mcp add --transport http --scope project markinside http://127.0.0.1:<PORT>/mcp
 ```
 
-</TabItem>
-</Tabs>
-
-## Connect through Agent Plugin
-
-You can also use MarkInside through an agent plugin: it still talks to the same MCP server, but packages MCP config and workflow skills together.
-
-<Tabs syncKey="agent">
-<TabItem label="Codex">
-
-Plugin structure:
-
-<FileTree>
-- markinside/
-  - .codex-plugin/
-    - plugin.json
-  - .mcp.json
-  - skills/
-    - markinside/
-      - SKILL.md
-</FileTree>
-
-`markinside/.codex-plugin/plugin.json`:
-
-```json
-{
-  "name": "markinside",
-  "version": "0.1.0",
-  "description": "Skills and MCP config for MarkInside workflows.",
-  "skills": "./skills/",
-  "mcpServers": "./.mcp.json"
-}
-```
-
-`markinside/.mcp.json`:
+You can also edit the project config file `.mcp.json`:
 
 ```json
 {
@@ -89,112 +63,6 @@ Plugin structure:
   }
 }
 ```
-
-`markinside/skills/markinside/SKILL.md`:
-
-```md
----
-name: markinside
-description: Use MarkInside MCP tools to create and edit code images.
----
-
-Always use the MarkInside MCP tools first when users ask for image generation or edits in MarkInside.
-```
-
-Register the plugin in a marketplace file:
-- Project scope: `$REPO_ROOT/.agents/plugins/marketplace.json`
-- Personal scope: `~/.agents/plugins/marketplace.json`
-
-```json
-{
-  "name": "markinside-local-plugins",
-  "interface": {
-    "displayName": "MarkInside Local Plugins"
-  },
-  "plugins": [
-    {
-      "name": "markinside",
-      "source": {
-        "source": "local",
-        "path": "./plugins/markinside"
-      },
-      "policy": {
-        "installation": "AVAILABLE"
-      },
-      "category": "Productivity"
-    }
-  ]
-}
-```
-
-If you use personal scope, place plugin files under `~/.codex/plugins/markinside` and set `path` to `./.codex/plugins/markinside`.
-
-Restart Codex, open `/plugins`, choose your local marketplace, and install `markinside`.
-
-</TabItem>
-<TabItem label="Claude Code">
-
-Plugin structure:
-
-<FileTree>
-- markinside/
-  - .claude-plugin/
-    - plugin.json
-  - .mcp.json
-  - skills/
-    - markinside/
-      - SKILL.md
-</FileTree>
-
-`markinside/.claude-plugin/plugin.json`:
-
-```json
-{
-  "name": "markinside",
-  "version": "0.1.0",
-  "description": "Skills and MCP config for MarkInside workflows.",
-  "skills": "./skills/",
-  "mcpServers": "./.mcp.json"
-}
-```
-
-`markinside/.mcp.json`:
-
-```json
-{
-  "mcpServers": {
-    "markinside": {
-      "url": "http://127.0.0.1:<PORT>/mcp"
-    }
-  }
-}
-```
-
-`markinside/skills/markinside/SKILL.md`:
-
-```md
----
-name: markinside
-description: Use MarkInside MCP tools to create and edit code images.
----
-
-Always use the MarkInside MCP tools first when users ask for image generation or edits in MarkInside.
-```
-
-During development, load it directly:
-
-```bash
-claude --plugin-dir ./markinside
-```
-
-For persistent installation, create a local marketplace in your repo (or personal plugin repo), then add and install it:
-
-```text
-/plugin marketplace add ./path/to/your-marketplace-repo
-/plugin install markinside@<marketplace-name>
-```
-
-Use `claude plugin install markinside@<marketplace-name> --scope project` for project scope, or omit `--scope` for user scope.
 
 </TabItem>
 </Tabs>
