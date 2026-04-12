@@ -29,7 +29,7 @@ h3 {
 }
 
 p {
-	font-size: 0.9em;
+	font-size: 0.9rem;
 	line-height: 1.3em;
 	margin-bottom: 0.7em;
     font-weight: 400;
@@ -39,10 +39,9 @@ ul {
 	margin-bottom: 1.1em;
 }
 
-/* Keep Starlight FileTree markers clean (no square bullets from global li styles). */
-starlight-file-tree ul,
-starlight-file-tree li {
-	list-style: none !important;
+li {
+	list-style: disc;
+	list-style-position: outside;
 }
 
 p.note {
@@ -102,17 +101,17 @@ html:not([data-has-sidebar]) {
 
 .content-panel h1, 
 .sl-markdown-content h1 {
-	font-size: 2.4rem;
+	font-size: 2.2rem;
 }
 
 .sl-markdown-content h2,
 .sl-markdown-content .sl-heading-wrapper.level-h2 > h2 {
-	font-size: 1.8rem;
+	font-size: 1.7rem;
 }
 
 .sl-markdown-content h3,
 .sl-markdown-content .sl-heading-wrapper.level-h3 > h3 {
-	font-size: 1.6rem;
+	font-size: 1.4rem;
 }
 
 .sl-markdown-content p code,
@@ -122,6 +121,11 @@ html:not([data-has-sidebar]) {
 	font-size: 0.8em;
 	padding: 0 0.125rem;
 	background: rgb(255 255 255 / 0.1);
+}
+
+.sl-markdown-content li {
+	font-size: 0.9rem;
+	line-height: 1.3em;
 }
 
 .sl-markdown-content pre {
